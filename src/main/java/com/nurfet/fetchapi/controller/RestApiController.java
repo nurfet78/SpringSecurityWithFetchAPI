@@ -54,10 +54,10 @@ public class RestApiController {
         try {
             userService.save(user);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException ex) {
             addErrorIfDataIntegrityViolationException(bindingResult);
             String error = getErrorsFromBindingResult(bindingResult);
-            return new ResponseEntity<>(new ExceptionInfo(error), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ExceptionInfo(error), HttpStatus.CONFLICT);
         }
     }
 

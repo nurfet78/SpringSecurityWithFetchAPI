@@ -58,6 +58,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/login").anonymous()
                         .requestMatchers("/").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/users/*").hasRole("ADMIN")
                         .anyRequest().authenticated()).
                 exceptionHandling((exception) -> exception.accessDeniedHandler(accessDeniedHandler))
 

@@ -1,5 +1,6 @@
 package com.nurfet.fetchapi.service;
 
+import com.nurfet.fetchapi.exception.NotFoundException;
 import com.nurfet.fetchapi.repository.RoleRepository;
 import com.nurfet.fetchapi.repository.UserRepository;
 import com.nurfet.fetchapi.model.Role;
@@ -47,12 +48,9 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getById(long id) {
-        User user = null;
-        Optional<User> optional = userDAO.findById(id);
-        if (optional.isPresent()) {
-            user = optional.get();
-        }
-        return user;
+
+        return userDAO.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
+
     }
 
     @Transactional
@@ -70,7 +68,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteById(long id) {
-        userDAO.deleteById(id);
+        User user = userDAO.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
+
+        userDAO.delete(user);
     }
 
 
